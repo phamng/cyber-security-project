@@ -3,6 +3,8 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
+<h2>Choose a topic to vote:</h2>
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}

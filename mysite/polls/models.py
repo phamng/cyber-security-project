@@ -35,4 +35,8 @@ class Vote(models.Model):
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
     class Meta:
+        # Ensure a user can vote only once per question
         unique_together = ('user', 'question')
+
+    def __str__(self):
+        return f"{self.user.username} voted on '{self.question}' for '{self.choice}'"
