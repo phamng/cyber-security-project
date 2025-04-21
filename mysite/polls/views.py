@@ -1,28 +1,26 @@
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.db import connection
 
 from .models import Choice, Question, Vote
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
     return render(request, 'polls/login.html')
 
 
-# A01:2021 - Broken Authentication Fix: Ensure only authenticated users can view questions
-# @login_required
+@login_required
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
 
-# A01:2021 - Broken Authentication Fix: Ensure only authenticated users can view question details
-# @login_required
+
+@login_required
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question': question})

@@ -126,3 +126,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# A07: 2021 - Identification and Authentication Failures: No account lockout or rate limiting
+
+# Fix for A07:2021 - Identification and Authentication Failures
+# # Set session expiration time (in seconds)
+# SESSION_COOKIE_AGE = 900  # 15 minutes
+# # Set session expiration on browser close
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
