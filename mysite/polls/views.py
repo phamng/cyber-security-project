@@ -57,8 +57,8 @@ def vote(request, question_id):
     #         'error_message': "You've already voted on this question..",
     #     })
 
+    # # FIX for A03:2021 - Injection
     # try:
-    #     # FIX for A03:2021 - Injection
     #     choice = question.choice_set.get(pk=request.POST['choice'])
     # except (KeyError, Choice.DoesNotExist):
     #     return render(request, 'polls/detail.html', {
