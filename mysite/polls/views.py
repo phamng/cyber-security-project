@@ -37,16 +37,16 @@ def results(request, question_id):
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
+    # A03:2021 - Injection: Raw SQL query
     choice_id = request.POST['choice']
-    # A03:2021 - Injection: Unsafe SQL using user input!
     sql_query = f"UPDATE polls_choice SET votes = votes + 1 WHERE id = {choice_id};"
     with connection.cursor() as cursor:
         cursor.execute(sql_query)
 
     # FIX for A03:2021 - Injection
-    # sql_query = "UPDATE polls_choice SET votes = votes + 1 WHERE id = %s"
-    # with connection.cursor() as cursor:
-    #     cursor.execute(sql_query, [choice_id])
+    # choice = question.choice_set.get(pk=request.POST['choice'])
+    # choice.votes += 1
+    # choice.save()
 
     # A04:2021 - Insecure Design: There is no check to see if the user has already voted
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
