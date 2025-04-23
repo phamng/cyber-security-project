@@ -6,6 +6,7 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'polls:vote' question.id %}" method="post">
+<!-- Cross-Site Request Forgery (CSRF) Flaw-->
 <!-- FIX to CSRF flaw -->
 <!-- {% csrf_token %} -->
 {% for choice in question.choice_set.all %}
