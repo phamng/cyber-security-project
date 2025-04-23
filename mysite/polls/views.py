@@ -37,36 +37,40 @@ def results(request, question_id):
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
-    # A03:2021 - Injection: Unsafe SQL using user input!
     choice_id = request.POST['choice']
+    # A03:2021 - Injection: Unsafe SQL using user input!
     sql_query = f"UPDATE polls_choice SET votes = votes + 1 WHERE id = {choice_id};"
-
     with connection.cursor() as cursor:
         cursor.execute(sql_query)
 
-    # A04:2021 - Insecure Design: Users can vote multiple times
+    # FIX for A03:2021 - Injection
+    # sql_query = "UPDATE polls_choice SET votes = votes + 1 WHERE id = %s"
+    # with connection.cursor() as cursor:
+    #     cursor.execute(sql_query, [choice_id])
+
+    # A04:2021 - Insecure Design: There is no check to see if the user has already voted
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-    # # This part (lines 54 - 74) contains fixes for A03 and A04 vunerabilities
-    # # FIX for A04:2021 - Insecure Design
-    # if Vote.objects.filter(user=request.user, question=question).exists():
-    #     return render(request, 'polls/detail.html', {
-    #         'question': question,
-    #         'error_message': "You've already voted on this question..",
-    #     })
+# # FIX for A04:2021 - Insecure Design
+# def vote(request, question_id):
+#     question = get_object_or_404(Question, pk=question_id)
 
-    # # FIX for A03:2021 - Injection
-    # try:
-    #     choice = question.choice_set.get(pk=request.POST['choice'])
-    # except (KeyError, Choice.DoesNotExist):
-    #     return render(request, 'polls/detail.html', {
-    #         'question': question,
-    #         'error_message': "You didn't select a valid choice.",
-    #     })
+#     if Vote.objects.filter(user=request.user, question=question).exists():
+#         return render(request, 'polls/detail.html', {
+#             'question': question,
+#             'error_message': "You've already voted on this question..",
+#         })
 
-    # choice.votes += 1
-    # choice.save()
+#     try:
+#         choice = question.choice_set.get(pk=request.POST['choice'])
+#     except (KeyError, Choice.DoesNotExist):
+#         return render(request, 'polls/detail.html', {
+#             'question': question,
+#             'error_message': "You didn't select a valid choice.",
+#         })
 
-    # Vote.objects.create(user=request.user, question=question, choice=choice)
+#     choice.votes += 1
+#     choice.save()
+#     Vote.objects.create(user=request.user, question=question, choice=choice)
 
-    # return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+#     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
