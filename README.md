@@ -26,11 +26,18 @@ screenshots that document various security flaws and their fixes.
 
    ```
 
-3. Run the Django development server:
+3. Create an admin user:
+
+   ```bash
+   python manage.py createsuperuser
+
+   ```
+
+4. Run the Django development server:
 
    ```bash
    python manage.py runserver
 
    ```
 
-4. Open your browser and go to http://127.0.0.1:8000/ to access the application.
+5. Open your browser and go to http://127.0.0.1:8000/ to access the application.
