@@ -10,39 +10,15 @@
 <body>
 
     
-<form action='logout/' method="POST">
+<form action="{% url 'logout' %}" method="POST">
     {% csrf_token %}
     <input type="submit" value="Logout"/>
 </form>
 
 <hr>
 
-    <!-- A07: 2021 - Identification and Authentication Failures: No account lockout-->
-    <!-- <p id="session-timer" style="color: green; font-weight: bold;">Session expires in</p>
-
-    <hr>
-
-    <script>
-        const sessionDuration = 10; // 15 minutes
-        let timeLeft = sessionDuration;
-
-        const countdown = setInterval(() => {
-            timeLeft--;
-
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById("session-timer").textContent =
-                `Session expires in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                alert("Your session has expired. Logging out...");
-                window.location.href = "{% url 'login' %}";
-            }
-        }, 1000);
-    </script> -->
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 
 </body>
 </html>
